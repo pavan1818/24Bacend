@@ -23,12 +23,13 @@ public class Center {
 	private String address;
 	private String contact;
 	private int ownerId;
+	private String type;
 	
 	
 	public Center() {	}
 
 	
-	public Center(Integer id, String name, String description, String locality, String address, String contact, Integer ownerId) {
+	public Center(Integer id, String name, String description, String locality, String address, String contact, Integer ownerId, String type) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -37,6 +38,7 @@ public class Center {
 		this.address = address;
 		this.contact = contact;
 		this.ownerId = ownerId;
+		this.type = type;
 	}
 
 	public Center(String locality){
@@ -95,8 +97,15 @@ public class Center {
 	public Integer getOwnerId() {
 		return ownerId;
 	}
-
-	public void setOwnerId(Integer ownerId) {
+	public void setOwnerId(int ownerId) {
 		this.ownerId = ownerId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

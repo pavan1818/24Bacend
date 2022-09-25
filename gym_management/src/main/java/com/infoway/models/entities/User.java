@@ -1,17 +1,11 @@
 package com.infoway.models.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang.RandomStringUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name="USER")
+@Table(name="users")
 public class User {
 	
 	
@@ -25,6 +19,9 @@ public class User {
 	  private String password;
 	  private String role;
 
+	  @Column(unique=true)
+	  private String authToken;
+
 
 
 	public User() {
@@ -33,7 +30,7 @@ public class User {
 
 
 	public User(int user_id, String name, String contact, String address, String email, String password, String role,
-			Set<Center> centers) {
+			String authToken) {
 		super();
 		this.user_id = user_id;
 		this.name = name;
@@ -42,6 +39,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.authToken = authToken;
 //		this.centers = centers;
 	}
 
@@ -130,7 +128,13 @@ public class User {
 		this.role = role;
 	}
 
+	public String getAuthToken() {
+		return authToken;
+	}
 
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
+	}
 
 	@Override
 	public String toString() {
@@ -139,14 +143,7 @@ public class User {
 	}
 
 
-	
-
-	
-	
-
-	  
-	 
-	  
-	  
-	  
+	public String generateAuthToken() {
+		return RandomStringUtils.random(16,true,true);
+	}
 }

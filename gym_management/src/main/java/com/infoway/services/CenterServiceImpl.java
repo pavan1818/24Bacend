@@ -73,8 +73,8 @@ public class CenterServiceImpl implements CenterService {
     public List<String> findAllLocalities() {
         List<Center> centers = centerDao.findAll();
         return centers.stream()
-                .map(Center::getLocality)
-                .collect(Collectors.toList());
+                .map(center -> center.getLocality().toUpperCase())
+                .distinct().collect(Collectors.toList());
 
     }
 

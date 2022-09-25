@@ -55,9 +55,10 @@ public class UserRestController {
 	}
 
     //save or update user(member)
-	@PostMapping("/users/save")
+	@PostMapping("/users")
 	public ResponseEntity<User> save(@RequestBody User user){
 //		user.setRole("member");
+		user.setAuthToken(user.generateAuthToken());
 	   User newUser = userService.save(user);
 	   return ResponseEntity.ok(newUser);
    }

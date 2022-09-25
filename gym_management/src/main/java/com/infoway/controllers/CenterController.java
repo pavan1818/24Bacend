@@ -1,6 +1,8 @@
 package com.infoway.controllers;
 import java.util.List;
 
+import com.infoway.models.entities.User;
+import com.infoway.services.AuthService;
 import com.infoway.services.CenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,15 @@ public class CenterController {
 
 	@Autowired
 	private CenterService centerService;
-	
+
+	@Autowired
+	private AuthService authService;
+
+
 	@PostMapping("/center")
 	Center newCenter(@RequestBody Center newCenter)
 	{
+		newCenter.setOwnerId(authService.getCurrentUser().getUser_id());
 		return centerService.save(newCenter);
 	}
 	
@@ -25,21 +32,22 @@ public class CenterController {
 	@GetMapping("/getcenters")
 	List<Center> getAllCenters()
 	{
+		User user = authService.getCurrentUser();
+		if (user.getRole().equals("owner")) {
+			return centerService.findMyCenters(user.getUser_id());
+		}
+
 		return centerService.findAll();
 	}
 
 	@GetMapping("/my_centers")
-	List<Center> getOwnerCenters(@RequestParam(name = "owner_id") Integer ownerId) {
-		return centerService.findMyCenters(ownerId);
+	List<Center> getOwnerCenters() {
+		return centerService.findMyCenters(authService.getCurrentUser().getUser_id());
 	}
 
-//	@GetMapping("/my_centers/{owner_id}")
-//	List<Center> getOwnerCenters(@PathVariable("owner_id") Integer ownerId) {
-//		return centerService.findMyCenters(ownerId);
-//	}
 
-		@GetMapping("/all_centers")
-		List<Center> getAllFilteredCenters(@RequestParam(name = "locality") String locality) {
+	@GetMapping("/all_centers")
+	List<Center> getAllFilteredCenters(@RequestParam(name = "locality") String locality) {
 		return centerService.findByLocality(locality);
 	}
 
